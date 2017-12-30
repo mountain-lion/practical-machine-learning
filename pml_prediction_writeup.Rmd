@@ -155,7 +155,7 @@ The highly correlated variables are shown in dark colors in the graph above. To 
 Three methods will be applied to model the regressions (in the Train dataset) and the best one (with higher accuracy when applied to the Test dataset) will be used for the quiz predictions. The methods are namely: [1] Random Forests, [2] Decision Tree and [2] Generalized Boosted Model, as described below.
 Additionally, a Confusion Matrix is plotted at the end of each analysis to help visualize the accuracy of the models.
 
-Since the caret::train(..., method="rf" | "gbm") in case of Random Forest or Generalized Boosted Model is extremely resource intensive (in terms of CPU and memory consumption), an approach to parallelism using the cluster of CPU cores is used. This method is detailed here -> https://rpubs.com/lgreski/improvingCaretPerformance . Thus code snippets outlined below are assumed to be self-explantory.
+Since, the caret::train(..., method="rf" | "gbm") in case of Random Forest or Generalized Boosted Model is extremely resource intensive (in terms of CPU and memory consumption), an approach to parallelism using the cluster of CPU cores is used. This method is detailed here -> https://rpubs.com/lgreski/improvingCaretPerformance . Thus code snippets outlined below are assumed to be self-explantory.
 
 ## Method: Random Forest
 
@@ -188,6 +188,8 @@ plot(confMatRandForest$table, col = confMatRandForest$byClass,
      main = paste("Random Forest - Accuracy =",
                   round(confMatRandForest$overall['Accuracy'], 4)))
 ```
+
+
 ## Method: Decision Trees
 
 ```{r echo=TRUE}
@@ -256,10 +258,12 @@ plot(confMatGBM$table, col = confMatGBM$byClass,
 # Model Selection and Prediction
 
 The accuracy of the 3 regression modeling methods above are:
-
-    Random Forest : 0.9968
-    Decision Tree : 0.7368
-    GBM : 0.9857
+    
+    Model         | Accuracy |Out of Sample Error (%)
+    --------------|----------|-----------------------
+    Random Forest | 0.9968   |  0.32%
+    Decision Tree | 0.7368   |  26.32%
+    GBM           | 0.9857   |  1.43%
 
 Since, the Random Forest model has the highest accuracy, it will be applied to predict the 20 quiz results (testing dataset) as shown below.
 
@@ -268,7 +272,7 @@ predict_test <- predict(modFitRandForest, newdata=test_data)
 predict_test
 ```
 
-As such the training model developed using Random Forest was able to achieve over 99.99% accuracy, or less than 0.03% out-of-sample error, and was able to predict the 20 test cases with 100% accuracy.
+As such, the training model developed using Random Forest was able to achieve over 99.68% accuracy, or less than 0.32% out-of-sample error, and was able to predict the 20 test cases with 100% accuracy.
 
 ************************************************
 
